@@ -56,5 +56,3 @@ Run to match:
 ## Notes
 - Ensure the postgres_init service finished the load_data() before running match_prospects service.
 - The project uses SQLAlchemy for ORM-based interactions with the PostgreSQL database.
-
-
