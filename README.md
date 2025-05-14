@@ -6,8 +6,14 @@ This project aims to match user prospects based on user location (country and re
 ## Setup
 
 1. Clone the repository:
-git clone https://github.com/aviran10/location-based-qualification.git
+  ```
+  git clone https://github.com/aviran10/location-based-qualification.git
+  ```
+
+then, navigate to project dir:
+  ```
 cd <project-directory>
+  ```
 
 
 ### 2. Ensure Docker is running
@@ -21,8 +27,13 @@ cd <project-directory>
   ```
 
 Run Postgress Init:
+This process build the Postgres Tables and load the given data.
 
+  ```
 docker-compose up postgres_init 
+  ```
+
+NOTE: wait until the service finished the process.
 
 ## Database Schema
 This project uses the following key tables:
@@ -48,9 +59,11 @@ This project uses the following key tables:
 ## Running the Match Process
 The match process filters prospects based on user locations (included and not in excluded). 
 After matching, the results are saved in the `user_prospect_results` table.
-Run to match:
 
+Run to match:
+  ```
  docker-compose up match_prospect
+  ```
 
 ## Quering result 
 
@@ -58,7 +71,8 @@ Run to match:
 ```sql
 SELECT * 
 FROM user_prospect_results
-WHERE is_in_location = 't';
+WHERE is_in_location = 't';  ```
+
 ## Notes
 - Ensure the postgres_init service finished the load_data() before running match_prospects service.
 - The project uses SQLAlchemy for ORM-based interactions with the PostgreSQL database.
@@ -67,11 +81,14 @@ WHERE is_in_location = 't';
 '''sql
 SELECT user_id, COUNT(*) as checked_count
 FROM user_prospect_results
-GROUP BY user_id;
+GROUP BY user_id;  ```
+
 
 ### 3. Retrieve all records for a specific user (user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7')
 '''sql
 SELECT * 
 FROM user_prospect_results
-WHERE user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7';
+WHERE user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7';  ```
+
+
 
