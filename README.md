@@ -1,12 +1,12 @@
-# Prospect Matching Project
+# User Location Prospect Matching Project
 
 ## Overview
-This project aims to match user prospects based on location and other attributes, providing an efficient way to evaluate and store matched results.
+This project aims to match user prospects based on user location (country and region), providing an efficient way to evaluate and store matched results for future usage.
 
 ## Setup
 
 1. Clone the repository:
-git clone <repository-url>
+git clone 
 cd <project-directory>
 
 
@@ -20,8 +20,10 @@ cd <project-directory>
   docker-compose build
   ```
 
+Run Postgress Init:
 
-  
+docker-compose up postgres_init 
+
 ## Database Schema
 This project uses the following key tables:
 - `users`: Stores user details.
@@ -30,14 +32,29 @@ This project uses the following key tables:
 - `user_excluded_locations`: Stores locations excluded for each user.
 - `user_prospect_results`: Contains the results of the matching process.
 
+                List of relations
+ Schema |          Name           | Type  | Owner
+--------+-------------------------+-------+-------
+ public | countries               | table | admin
+ public | country_regions         | table | admin
+ public | prospects               | table | admin
+ public | regions                 | table | admin
+ public | user_excluded_locations | table | admin
+ public | user_included_locations | table | admin
+ public | user_prospect_results   | table | admin
+ public | users                   | table | admin
+
+
 ## Running the Match Process
-The match process filters prospects based on user locations (included and excluded). After matching, the results are saved in the `user_prospect_results` table.
+The match process filters prospects based on user locations (included and not in excluded). 
+After matching, the results are saved in the `user_prospect_results` table.
+Run to match:
+
+ docker-compose up match_prospect
+
 
 ## Notes
-- Ensure the database is properly set up and populated before running the matching process.
+- Ensure the postgres_init service finished the load_data() before running match_prospects service.
 - The project uses SQLAlchemy for ORM-based interactions with the PostgreSQL database.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
