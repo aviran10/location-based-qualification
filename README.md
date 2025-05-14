@@ -65,36 +65,27 @@ Run to match:
 
 1. **countries**:
    - Contains data about different countries.
-   - Useful for associating prospects or users with geographical regions.
 
 2. **country_regions**:
    - Stores regional data for each country.
-   - Helps in mapping countries to specific regions for more granular location-based matching.
 
 3. **prospects**:
-   - Stores information about the prospects (potential users or entities that are being matched).
-   - Contains details that will be evaluated against users' preferences and location data.
+   - Stores information about the prospects (prospect_id, user_id, company_country, company_region)
 
 4. **regions**:
    - Contains regional-specific data.
-   - Used to classify and manage prospects and users based on their geographical location.
 
 5. **user_excluded_locations**:
-   - Stores locations that the user has explicitly excluded.
-   - Helps in filtering out prospects that fall within these locations.
+   - Stores locations that the user excluded locations.
 
 6. **user_included_locations**:
-   - Stores locations that the user has explicitly included.
-   - Used to filter and match prospects that meet the user's preferred location criteria.
+   - Stores locations that the user included locations.
 
 7. **user_prospect_results**:
-   - Stores the results of the matching process.
-   - Tracks which prospects are a match based on the user's criteria (including included/excluded locations).
+   - Stores the results of the matching prospects with the user location.
 
 8. **users**:
-   - Stores information about users.
-   - Contains essential user details used for matching prospects against their preferences and location settings.
-
+   - Stores information about users. (this could be expanded with mode detailes)
 
 
 ## Quering result 
@@ -104,11 +95,21 @@ docker exec -it postgres_db psql -U admin -d SampleadDB
 ```
 To query the results please run one of the following queries (or any other :) )
 
-### 1. Count the number of prospects checked by each user
-'''sql
+### 1. Count qualified prospects per user_id
+
+```sql
+SELECT user_id, COUNT(*) AS qualified_locations
+FROM user_prospect_results
+WHERE is_in_location = 't'
+GROUP BY user_id
+LIMIT 10;
+
+
+### 2. Count the number of prospects checked by each user
+```sql
 SELECT user_id, COUNT(*) as checked_count
 FROM user_prospect_results
-GROUP BY user_id;  ```
+GROUP BY user_id; 
 
 
 ### User Check Count - (partially)
@@ -122,17 +123,18 @@ GROUP BY user_id;  ```
 | 6fabfb54-9c90-4910-8d07-0dddef15384c  | 16            |
 
 
-### 2. Retrieve all records where `is_in_location` is `true`
+### 3. Retrieve all records where `is_in_location` is `true`
 ```sql
 SELECT * 
 FROM user_prospect_results
-WHERE is_in_location = 't';  ```
+WHERE is_in_location = 't';
 
-### 3. Retrieve all records for a specific user (user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7')
+### 4. Retrieve all records for a specific user (user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7')
 ```sql
 SELECT * 
 FROM user_prospect_results
-WHERE user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7';  ```
+WHERE user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7' AND
+is_in_location = 't';
 
 
 
