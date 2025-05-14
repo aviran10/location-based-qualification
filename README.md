@@ -36,6 +36,16 @@ docker-compose up postgres_init
 
 NOTE: wait until the service finished the process.
 
+## Running the Match Process
+The match process filters prospects based on user locations (included and not in excluded). 
+After matching, the results are saved in the `user_prospect_results` table.
+
+Run to match:
+  ```
+ docker-compose up match_prospect
+  ```
+
+
 ## Database Schema
 
 ### List of relations
@@ -86,14 +96,6 @@ NOTE: wait until the service finished the process.
    - Contains essential user details used for matching prospects against their preferences and location settings.
 
 
-## Running the Match Process
-The match process filters prospects based on user locations (included and not in excluded). 
-After matching, the results are saved in the `user_prospect_results` table.
-
-Run to match:
-  ```
- docker-compose up match_prospect
-  ```
 
 ## Quering result 
 To connect the postgres DB set for this assignment, please run:
@@ -118,10 +120,6 @@ GROUP BY user_id;  ```
 | 1776a737-8794-476c-aad6-7004dc4e64f5  | 48            |
 | b16dca0d-e714-4a4b-aa63-f07073f751d3  | 250           |
 | 6fabfb54-9c90-4910-8d07-0dddef15384c  | 16            |
-| 11008ab0-c90a-4a3e-9163-b09e4d4336e0  | 68            |
-| 07548ae5-846d-4749-b831-00d4bb818974  | 248           |
-| e0d5d905-d9dd-446e-89e4-6ac899155e3f  | 118           |
-| aecbce84-80cb-46fb-a2f0-9b0f488871f1  | 226           |
 
 
 ### 2. Retrieve all records where `is_in_location` is `true`
@@ -131,10 +129,11 @@ FROM user_prospect_results
 WHERE is_in_location = 't';  ```
 
 ### 3. Retrieve all records for a specific user (user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7')
-'''sql
+```sql
 SELECT * 
 FROM user_prospect_results
 WHERE user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7';  ```
+
 
 
 ## Notes
