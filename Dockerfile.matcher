@@ -1,0 +1,23 @@
+# Dockerfile.matcher
+
+# Use the official Python base image
+FROM python:3.9-slim
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy the requirements.txt and install dependencies
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire project into the container
+COPY ./ /app/
+
+# Set environment variables
+ENV PYTHONUNBUFFERED 1
+
+# Make sure match_prospect.py is copied into the container
+COPY ./match_prospects.py /app/match_prospects.py
+
+# Run match_prospect.py on container startup
+CMD ["python", "match_prospects.py"]
