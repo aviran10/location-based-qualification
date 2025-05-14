@@ -6,7 +6,7 @@ This project aims to match user prospects based on user location (country and re
 ## Setup
 
 1. Clone the repository:
-git clone 
+git clone https://github.com/aviran10/location-based-qualification.git
 cd <project-directory>
 
 
@@ -52,7 +52,26 @@ Run to match:
 
  docker-compose up match_prospect
 
+## Quering result 
 
+### 1. Retrieve all records where `is_in_location` is `true`
+```sql
+SELECT * 
+FROM user_prospect_results
+WHERE is_in_location = 't';
 ## Notes
 - Ensure the postgres_init service finished the load_data() before running match_prospects service.
 - The project uses SQLAlchemy for ORM-based interactions with the PostgreSQL database.
+
+### 2. Count the number of prospects checked by each user
+'''sql
+SELECT user_id, COUNT(*) as checked_count
+FROM user_prospect_results
+GROUP BY user_id;
+
+### 3. Retrieve all records for a specific user (user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7')
+'''sql
+SELECT * 
+FROM user_prospect_results
+WHERE user_id = 'be3bd455-3858-4d5f-b8e9-1895c51e50e7';
+
